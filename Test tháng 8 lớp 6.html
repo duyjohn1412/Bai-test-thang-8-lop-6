@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài test tháng 8 lớp 6</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        :root {
+            --primary: #4A90E2; /* Xanh dương dễ thương cho lớp 6 */
+            --secondary: #FF6B6B; /* Đỏ san hô */
+            --accent: #FDCB6E; /* Vàng sáng */
+            --correct: #00D26A;
+            --correct-shadow: #00a051;
+            --wrong: #FF4757;
+            --wrong-shadow: #d1303e;
+            --btn-normal: #ffffff;
+            --btn-normal-shadow: #e0e0e0;
+            --text-main: #2d3436;
+            --bg-card: rgba(255, 255, 255, 0.95);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(-45deg, #4A90E2, #FDCB6E, #FF6B6B, #A8E6CF);
+            background-size: 400% 400%;
+            animation: gradientBg 15s ease infinite;
+            color: var(--text-main);
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        @keyframes gradientBg {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Họa tiết nổi vui nhộn (ngôi sao, đám mây, mặt cười) */
+        .pattern-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background-image: url("data:image/svg+xml,%3Csvg width='120' height='120' viewBox='0 0 120 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20,20 Q30,10 40,20 T60,20' stroke='rgba(255,255,255,0.4)' fill='none' stroke-width='3'/%3E%3Cpolygon points='80,20 85,35 100,35 88,45 92,60 80,50 68,60 72,45 60,35 75,35' fill='rgba(255,255,255,0.3)'/%3E%3Ccircle cx='30' cy='90' r='10' fill='rgba(255,255,255,0.2)'/%3E%3Cpath d='M90,90 a10,10 0 0,0 20,0' stroke='rgba(255,255,255,0.4)' fill='none' stroke-width='3'/%3E%3C/svg%3E");
+            background-size: 150px;
+            animation: floatUp 35s linear infinite;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        @keyframes floatUp {
+            from { background-position: 0 100vh; }
+            to { background-position: 100vw 0; }
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header-title {
+            text-align: center;
+            color: white;
+            text-shadow: 2px 2px 0px rgba(0,0,0,0.2);
+            margin-bottom: 20px;
+            font-size: 28px;
+            font-weight: 900;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+            margin-bottom: 25px;
+            transition: transform 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .question-text {
+            font-size: 18px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            line-height: 1.5;
+            color: #2c3e50;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .btn-option {
+            background-color: var(--btn-normal);
+            color: var(--text-main);
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            padding: 15px 20px;
+            font-size: 17px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 6px 0 var(--btn-normal-shadow);
+            transition: all 0.1s;
+            text-align: left;
+            display: flex;
+            align-items: center;
+        }
+
+        .btn-option:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 0 var(--btn-normal-shadow);
+            border-color: var(--primary);
+        }
+
+        .btn-option:active:not(:disabled) {
+            transform: translateY(6px);
+            box-shadow: 0 0 0 transparent;
+        }
+
+        .btn-option.correct {
+            background-color: var(--correct) !important;
+            color: white !important;
+            border-color: var(--correct);
+            box-shadow: 0 6px 0 var(--correct-shadow) !important;
+        }
+
+        .btn-option.wrong {
+            background-color: var(--wrong) !important;
+            color: white !important;
+            border-color: var(--wrong);
+            box-shadow: 0 6px 0 var(--wrong-shadow) !important;
+        }
+
+        .btn-option:disabled { cursor: not-allowed; opacity: 0.9; }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+        .shake { animation: shake 0.5s; }
+
+        /* Khung giải thích siêu chi tiết */
+        .explanation {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-left: 6px solid var(--primary);
+            border-radius: 12px;
+            font-size: 16px;
+            line-height: 1.6;
+            animation: slideDown 0.3s ease;
+        }
+        
+        .explanation h4 { color: var(--secondary); margin-bottom: 12px; font-size: 19px; font-weight: 800;}
+        .explanation p { margin-bottom: 8px; }
+        .explanation b { color: #d35400; }
+        .explanation .trans { font-style: italic; color: #16a085; }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Split View Reading */
+        .reading-container {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+        }
+        .reading-text {
+            flex: 1;
+            background: #fff;
+            padding: 25px;
+            border-radius: 15px;
+            border: 3px dashed var(--primary);
+            line-height: 2;
+            font-size: 17px;
+        }
+        .reading-questions { flex: 1; }
+        .gap-select {
+            appearance: none;
+            background-color: #f1f2f6;
+            border: 2px solid var(--primary);
+            border-radius: 8px;
+            padding: 4px 12px;
+            font-weight: bold;
+            color: var(--primary);
+            cursor: pointer;
+            box-shadow: 0 4px 0 rgba(74, 144, 226, 0.3);
+            margin: 0 5px;
+            font-size: 16px;
+        }
+        .gap-select.correct { background: var(--correct); color: white; border-color: var(--correct); box-shadow: none; transform: translateY(4px);}
+        .gap-select.wrong { background: var(--wrong); color: white; border-color: var(--wrong); box-shadow: none; transform: translateY(4px); }
+
+        /* Rewriting Input */
+        .rewrite-input {
+            width: 100%;
+            padding: 15px;
+            font-size: 17px;
+            border: 2px solid #ccc;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            outline: none;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        .rewrite-input:focus { border-color: var(--primary); box-shadow: 0 0 8px rgba(74,144,226,0.3); }
+        .rewrite-input.correct { border-color: var(--correct); background: #e8f8f5;}
+        .rewrite-input.wrong { border-color: var(--wrong); background: #fdedec;}
+        
+        .btn-check {
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 12px 25px;
+            font-size: 16px;
+            font-weight: 900;
+            cursor: pointer;
+            box-shadow: 0 6px 0 #c0392b;
+        }
+        .btn-check:active { transform: translateY(6px); box-shadow: none; }
+
+        #login-screen, #result-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 25px;
+            text-align: center;
+            max-width: 450px;
+            width: 90%;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+        .modal-content input {
+            width: 100%;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 12px;
+            border: 2px solid var(--primary);
+            font-size: 18px;
+            text-align: center;
+            font-weight: bold;
+        }
+        .btn-start {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 20px;
+            border-radius: 15px;
+            box-shadow: 0 6px 0 #2980b9;
+            cursor: pointer;
+            font-weight: 900;
+            width: 100%;
+        }
+        
+        .section-title {
+            background: var(--secondary);
+            color: white;
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            font-weight: 900;
+            font-size: 20px;
+            box-shadow: 0 4px 0 #c0392b;
+        }
+
+        #submit-test {
+            display: block;
+            margin: 30px auto 50px;
+            background: var(--accent);
+            color: #d35400;
+            border: none;
+            padding: 20px 50px;
+            font-size: 24px;
+            font-weight: 900;
+            border-radius: 20px;
+            box-shadow: 0 8px 0 #e1b12c;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        #submit-test:hover { transform: translateY(-2px); box-shadow: 0 10px 0 #e1b12c; }
+        #submit-test:active { transform: translateY(8px); box-shadow: none; }
+
+        @media (max-width: 768px) {
+            .options-grid { grid-template-columns: 1fr; }
+            .reading-container { flex-direction: column; }
+            .reading-text, .reading-questions { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="pattern-bg"></div>
+
+    <!-- Màn hình Đăng nhập -->
+    <div id="login-screen">
+        <div class="modal-content">
+            <h1 style="color: var(--primary); margin-bottom: 10px; font-size: 32px;">🌟 BÀI TEST LỚP 6 🌟</h1>
+            <p style="font-weight: bold; color: #7f8c8d;">Hãy nhập tên để bắt đầu thử thách nhé!</p>
+            <input type="text" id="studentName" placeholder="Tên của con là gì?..." required>
+            <button class="btn-start" onclick="startTest()">BẮT ĐẦU CHIẾN ĐẤU! 🚀</button>
+        </div>
+    </div>
+
+    <!-- Màn hình Kết quả -->
+    <div id="result-screen" style="display: none;">
+        <div class="modal-content">
+            <h1 style="color: var(--correct); font-size: 35px;">🎉 CHÚC MỪNG 🎉</h1>
+            <h2 id="result-name" style="margin: 15px 0; color: var(--primary);"></h2>
+            <p style="font-size: 20px; font-weight: bold;">Điểm của con là:</p>
+            <h1 id="result-score" style="font-size: 55px; color: var(--secondary); margin: 10px 0; text-shadow: 2px 2px 0px #eee;"></h1>
+            <p id="result-feedback" style="font-weight: 800; margin-bottom: 20px; color: #2c3e50; font-size: 18px;"></p>
+            <p style="font-size: 14px; color: #95a5a6; font-style: italic;">(Kết quả đã được gửi cho cô giáo)</p>
+        </div>
+    </div>
+
+    <!-- Form Test chính -->
+    <div class="container" id="quiz-container" style="display: none;">
+        <h2 class="header-title">📝 BÀI KIỂM TRA TIẾNG ANH LỚP 6</h2>
+        <div id="questions-area"></div>
+        <button id="submit-test" onclick="submitTest()">NỘP BÀI & XEM ĐIỂM 🏆</button>
+    </div>
+
+    <!-- Google Form Ẩn -->
+    <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="if(submitted) { showResultScreen(); }"></iframe>
+    <form id="ss-form" action="https://docs.google.com/forms/d/e/1FAIpQLSelQyzh_lWyb2vZUnQ1jc1p9FLRknDZiUt9NiUiiX1epHTFLw/formResponse" method="POST" target="hidden_iframe" style="display:none;">
+        <input type="hidden" name="entry.351633352" value="Bài test Tiếng Anh Lớp 6" id="form-testname">
+        <input type="hidden" name="entry.1895948982" value="" id="form-tenhs">
+        <input type="hidden" name="entry.1232319784" value="" id="form-diem">
+        <input type="hidden" name="entry.1125920425" value="" id="form-tile">
+        <input type="hidden" name="entry.1907417670" value="" id="form-loisai">
+    </form>
+
+    <script>
+        // --- HỆ THỐNG ÂM THANH WEB AUDIO API ---
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        
+        function playDing() {
+            if(audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(880, audioCtx.currentTime); // Nốt A5
+            osc.frequency.exponentialRampToValueAtTime(1760, audioCtx.currentTime + 0.1); // Lên A6
+            gainNode.gain.setValueAtTime(0.5, audioCtx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+            osc.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.4);
+        }
+
+        function playBuzz() {
+            if(audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(200, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 0.3);
+            gainNode.gain.setValueAtTime(0.4, audioCtx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+            osc.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.3);
+        }
+
+        // --- CƠ SỞ DỮ LIỆU CÂU HỎI VÀ GIẢI THÍCH SIÊU CHI TIẾT ---
+        const questionsData = [
+            // PHONETICS
+            {
+                id: 1, section: "I. PHONETICS", instruction: "Mark the letter A, B, C, or D to indicate the word whose underlined part differs from the other three in pronunciation.",
+                qText: "1. A. br<u>o</u>ther    B. m<u>o</u>ther    C. p<u>u</u>t    D. s<u>o</u>me",
+                options: ["br<u>o</u>ther", "m<u>o</u>ther", "p<u>u</u>t", "s<u>o</u>me"], correct: 2,
+                exp: `<h4>Giải thích chi tiết:</h4>
+                <p><b>1. Phân tích phát âm:</b></p>
+                <p>A. br<u>o</u>ther /ˈbrʌðə(r)/<br>B. m<u>o</u>ther /ˈmʌðə(r)/<br>C. p<u>u</u>t /pʊt/<br>D. s<u>o</u>me /sʌm/</p>
+                <p><b>2. Tại sao chọn C?</b><br>Phần gạch chân ở đáp án C được phát âm là <b>/ʊ/</b> (u ngắn). Trong khi đó, các đáp án A, B, D đều được phát âm là <b>/ʌ/</b> (âm á).</p>`
+            },
+            {
+                id: 2, qText: "2. A. p<u>a</u>rk    B. st<u>a</u>rt    C. c<u>a</u>t    D. sm<u>a</u>rt",
+                options: ["p<u>a</u>rk", "st<u>a</u>rt", "c<u>a</u>t", "sm<u>a</u>rt"], correct: 2,
+                exp: `<h4>Giải thích chi tiết:</h4>
+                <p><b>1. Phân tích phát âm:</b></p>
+                <p>A. p<u>a</u>rk /pɑːk/<br>B. st<u>a</u>rt /stɑːt/<br>C. c<u>a</u>t /kæt/<br>D. sm<u>a</u>rt /smɑːt/</p>
+                <p><b>2. Tại sao chọn C?</b><br>Từ "cat" có phần gạch chân phát âm là <b>/æ/</b> (âm a bẹt). Các đáp án A, B, D khi chữ 'a' đi liền với chữ 'r' (ar) thường phát âm là <b>/ɑː/</b> (âm a dài).</p>`
+            },
+            {
+                id: 3, qText: "3. A. desk<u>s</u>    B. map<u>s</u>    C. plant<u>s</u>    D. room<u>s</u>",
+                options: ["desk<u>s</u>", "map<u>s</u>", "plant<u>s</u>", "room<u>s</u>"], correct: 3,
+                exp: `<h4>Giải thích chi tiết:</h4>
+                <p><b>1. Nhắc lại quy tắc phát âm đuôi "s/es":</b><br>
+                - Phát âm là <b>/s/</b> khi từ kết thúc bằng các âm vô thanh: /p/, /k/, /t/, /f/, /θ/ (thần tài phố cổ).<br>
+                - Phát âm là <b>/z/</b> khi kết thúc bằng nguyên âm hoặc âm hữu thanh.</p>
+                <p><b>2. Phân tích:</b><br>A. desk<u>s</u> /desks/ (kết thúc bằng âm /k/)<br>B. map<u>s</u> /mæps/ (kết thúc bằng âm /p/)<br>C. plant<u>s</u> /plɑːnts/ (kết thúc bằng âm /t/)<br>D. room<u>s</u> /ruːmz/ (kết thúc bằng âm /m/ - hữu thanh).</p>
+                <p><b>3. Kết luận:</b> Chọn D vì phát âm là /z/, còn lại là /s/.</p>`
+            },
+            {
+                id: 4, qText: "4. A. pen<u>s</u>    B. book<u>s</u>    C. teacher<u>s</u>    D. ruler<u>s</u>",
+                options: ["pen<u>s</u>", "book<u>s</u>", "teacher<u>s</u>", "ruler<u>s</u>"], correct: 1,
+                exp: `<h4>Giải thích chi tiết:</h4>
+                <p><b>1. Phân tích:</b><br>A. pen<u>s</u> /penz/ (âm cuối là /n/ hữu thanh -> phát âm /z/)<br>B. book<u>s</u> /bʊks/ (âm cuối là /k/ vô thanh -> phát âm /s/)<br>C. teacher<u>s</u> /ˈtiːtʃəz/ (âm cuối nguyên âm -> phát âm /z/)<br>D. ruler<u>s</u> /ˈruːləz/ (âm cuối nguyên âm -> phát âm /z/)</p>
+                <p><b>2. Tại sao chọn B?</b><br>Đuôi 's' trong từ "books" phát âm là <b>/s/</b>, khác với các từ còn lại phát âm là <b>/z/</b>.</p>`
+            },
+            {
+                id: 5, qText: "5. A. h<u>ou</u>se    B. l<u>u</u>nch    C. s<u>u</u>n    D. f<u>u</u>n",
+                options: ["h<u>ou</u>se", "l<u>u</u>nch", "s<u>u</u>n", "f<u>u</u>n"], correct: 0,
+                exp: `<h4>Giải thích chi tiết:</h4>
+                <p><b>1. Phân tích phát âm:</b></p>
+                <p>A. h<u>ou</u>se /haʊs/<br>B. l<u>u</u>nch /lʌntʃ/<br>C. s<u>u</u>n /sʌn/<br>D. f<u>u</u>n /fʌn/</p>
+                <p><b>2. Tại sao chọn A?</b><br>Chữ "ou" trong house phát âm là nguyên âm đôi <b>/aʊ/</b>. Các từ còn lại chứa chữ "u" phát âm là <b>/ʌ/</b> (âm á).</p>`
+            },
+
+            // MULTIPLE CHOICE
+            {
+                id: 6, section: "II. MULTIPLE CHOICE", instruction: "Mark the letter A, B, C, or D to indicate the correct answer to each of the following questions.",
+                qText: "6. Most schools require children to wear school ____.",
+                options: ["equipment", "favourite", "uniforms", "creative"], correct: 2,
+                exp: `<h4>Giải thích chi tiết:</h4>
+                <p><b>1. Dịch câu hỏi:</b> Hầu hết các trường học yêu cầu học sinh mặc đồng phục trường.</p>
+                <p><b>2. Phân tích đáp án:</b><br>A. equipment (n): thiết bị.<br>B. favourite (adj/n): yêu thích.<br>C. uniforms (n): đồng phục.<br>D. creative (adj): sáng tạo.</p>
+                <p><b>3. Tại sao chọn C?</b><br>Động từ <b>"wear"</b> (mặc) bắt buộc tân ngữ theo sau phải là trang phục. Cụm từ <b>"school uniforms"</b> (đồng phục học sinh) là đáp án hoàn toàn chính xác về mặt ngữ nghĩa và sự kết hợp từ (collocation).</p>`
+            },
+            {
+                id: 7, qText: "7. We play ____ at break time.",
+                options: ["exercise", "History", "judo", "football"], correct: 3,
+                exp: `<h4>Giải thích chi tiết:</h4>
+                <p><b>1. Dịch câu hỏi:</b> Chúng tôi chơi bóng đá vào giờ ra chơi.</p>
+                <p><b>2. Phân tích sự kết hợp từ (Collocations):</b><br>A. exercise (tập thể dục): đi với động từ "do" (do exercise).<br>B. History (Lịch sử): đi với động từ "study / learn".<br>C. judo (võ judo): đi với động từ "do" (do judo).<br>D. football (bóng đá): môn thể thao dùng bóng, đi với động từ "play" (play football).</p>
+                <p><b>3. Kết luận:</b> Chọn D vì phù hợp với động từ "play" đứng trước khoảng trống.</p>`
+            },
+            {
+                id: 8, qText: "8. It’s a difficult calculation. Can I borrow your ____?",
+                options: ["ruler", "schoolbag", "pencil case", "calculator"], correct: 3,
+                exp: `<h4>Giải thích chi tiết:</h4>
+                <p><b>1. Dịch câu hỏi:</b> Đó là một phép tính khó. Mình có thể mượn máy tính cầm tay của bạn được không?</p>
+                <p><b>2. Phân tích đáp án (Đồ dùng học tập):</b><br>A. ruler (n): thước kẻ.<br>B. schoolbag (n): cặp sách.<br>C. pencil case (n): hộp bút.<br>D. calculator (n): máy tính cầm tay.</p>
+                <p><b>3. Tại sao chọn D?</b><br>Từ khóa (Keywords) trong câu là <b>"calculation"</b> (phép tính, sự tính toán). Để làm phép tính thì chỉ có thể dùng "calculator". Các đồ dùng khác sai ngữ cảnh.</p>`
+            },
+            {
+                id: 9, qText: "9. In ____ lessons, they learn about animals and plants.",
+                options: ["history", "music", "English", "science"], correct: 3,
+                exp: `<h4>Giải thích chi tiết:</h4>
+                <p><b>1. Dịch câu hỏi:</b> Trong các tiết học Khoa học, họ học về động vật và thực vật.</p>
+                <p><b>2. Phân tích đáp án (Môn học):</b><br>A. history (n): lịch sử (học về các sự kiện quá khứ).<br>B. music (n): âm nhạc.<br>C. English (n): tiếng Anh.<br>D. science (n): khoa học tự nhiên.</p>
+                <p><b>3. Tại sao chọn D?</b><br>Từ khóa là <b>"animals and plants"</b> (động vật và thực vật). Chỉ có môn Khoa học (Science) / Sinh học mới nghiên cứu về chủ đề này.</p>`
+            },
+            {
+                id: 10, qText: "10. We have some new ____ in this school year: physics, computer science, etc.",
+                options: ["teachers", "equipment", "subjects", "friends"], correct: 2,
+                exp: `<h4>Giải thích chi tiết:</h4>
+                <p><b>1. Dịch câu hỏi:</b> Chúng tôi có một vài môn học mới trong năm học này: vật lý, tin học, vân vân.</p>
+                <p><b>2. Phân tích đáp án:</b><br>A. teachers (n): giáo viên.<br>B. equipment (n): trang thiết bị.<br>C. subjects (n): môn học.<br>D. friends (n): bạn bè.</p>
+                <p><b>3. Tại sao chọn C?</b><br>Phía sau dấu hai chấm liệt kê "physics" (vật lý) và "computer science" (tin học). Đây đều là tên các <b>môn học (subjects)</b>, nên C là đáp án đúng.</p>`
+            },
+            {
+                id: 11, qText: "11. \"____ class are you in?\" - \"Class 6B.\"",
+                options: ["Which", "When", "Whose", "Where"], correct: 0,
+                exp: `<h4>Giải thích chi tiết:</h4>
+                <p><b>1. Dịch câu hỏi:</b> "Bạn học lớp nào?" - "Lớp 6B."</p>
+                <p><b>2. Phân tích Từ để hỏi (Wh-words):</b><br>A. Which: Nào / Cái nào (Hỏi sự lựa chọn).<br>B. When: Khi nào (Hỏi thời gian).<br>C. Whose: Của ai (Hỏi sở hữu).<br>D. Where: Ở đâu (Hỏi nơi chốn).</p>
+                <p><b>3. Tại sao chọn A?</b><br>Cấu trúc giao tiếp hỏi bạn học lớp nào luôn dùng <b>"Which class are you in?"</b> (Bạn đang ở trong lớp nào - trong số các lớp của trường).</p>`
+            },
+            {
+                id: 12, qText: "12. School ____ at 4.30 p.m every day.",
+                options: ["are finishing", "finishes", "finish", "is finishing"], correct: 1,
+                exp: `<h4>Giải thích chi tiết:</h4>
+                <p><b>1. Dịch câu hỏi:</b> Trường học kết thúc lúc 4h30 chiều mỗi ngày.</p>
+                <p><b>2. Phân tích Ngữ pháp:</b><br>Dấu hiệu nhận biết là <b>"every day"</b> (mỗi ngày) -> Chỉ thói quen, lịch trình lặp đi lặp lại. Do đó phải dùng <b>Thì Hiện tại đơn</b> (Present Simple). -> Loại A và D (Hiện tại tiếp diễn).<br>Chủ ngữ <b>"School"</b> (trường học nói chung) là danh từ số ít (tương đương ngôi thứ 3 số ít "It"). Động từ kết thúc bằng "sh" phải thêm "es".</p>
+                <p><b>3. Kết luận:</b> Chọn B (finishes). C sai vì động từ nguyên thể.</p>`
+            },
+            {
+                id: 13, qText: "13. My house is ________ the bookstore and the bakery.",
+                options: ["in", "on", "between", "next"], correct: 2,
+                exp: `<h4>Giải thích chi tiết:</h4>
+                <p><b>1. Dịch câu hỏi:</b> Nhà của tôi nằm ở giữa nhà sách và tiệm bánh mì.</p>
+                <p><b>2. Phân tích Giới từ chỉ vị trí:</b><br>A. in: ở trong.<br>B. on: ở trên bề mặt.<br>C. between: ở giữa (2 vật/địa điểm).<br>D. next: phải đi kèm giới từ "to" (next to = bên cạnh).</p>
+                <p><b>3. Tại sao chọn C?</b><br>Cấu trúc cố định: <b>between A and B</b> (Ở giữa A và B). Trong câu có "the bookstore AND the bakery", nên "between" là đáp án duy nhất đúng.</p>`
+            },
+            {
+                id: 14, qText: "14. My ____ names are Nam and An.",
+                options: ["brothers'", "brother's", "brother", "brothers"], correct: 0,
+                exp: `<h4>Giải thích chi tiết:</h4>
+                <p><b>1. Dịch câu hỏi:</b> Tên của những người anh em của tôi là Nam và An.</p>
+                <p><b>2. Phân tích Sở hữu cách:</b><br>Vế sau liệt kê 2 tên "Nam and An" -> Suy ra có TỪ 2 NGƯỜI ANH/EM TRỞ LÊN. Do đó danh từ gốc phải là số nhiều "brothers".<br>Khi danh từ số nhiều đã có sẵn đuôi "s", để tạo sở hữu cách (của), ta <b>chỉ cần thêm dấu phẩy (')</b> ở cuối.</p>
+                <p><b>3. Kết luận:</b><br>A. brothers' (Tên của CÁC anh em tôi) -> Đúng.<br>B. brother's (Tên của 1 người anh) -> Sai logic vì có 2 tên.<br>C, D sai cấu trúc sở hữu cách.</p>`
+            },
+            {
+                id: 15, qText: "15. These are the ____ toys.",
+                options: ["children's", "childrens'", "childrens", "children"], correct: 0,
+                exp: `<h4>Giải thích chi tiết:</h4>
+                <p><b>1. Dịch câu hỏi:</b> Đây là những món đồ chơi của lũ trẻ.</p>
+                <p><b>2. Phân tích Sở hữu cách danh từ bất quy tắc:</b><br>Danh từ <b>"children"</b> (những đứa trẻ) là dạng số nhiều bất quy tắc của "child", bản thân nó KHÔNG có đuôi "s".<br>Với danh từ số nhiều bất quy tắc không có "s", quy tắc thêm sở hữu cách giống hệt danh từ số ít: <b>thêm 's</b>.</p>
+                <p><b>3. Kết luận:</b> Chọn A (children's). Đáp án B sai vì "children" tự thêm "s" vô cớ. C và D không có dấu phẩy sở hữu cách.</p>`
+            },
+            {
+                id: 16, qText: "16. There are two pictures ____ the wall.",
+                options: ["on", "in", "under", "behind"], correct: 0,
+                exp: `<h4>Giải thích chi tiết:</h4>
+                <p><b>1. Dịch câu hỏi:</b> Có hai bức tranh treo TRÊN tường.</p>
+                <p><b>2. Phân tích giới từ:</b><br>Khi nói về một vật được treo, dán, đính lơ lửng trên mặt phẳng (bức tường, trần nhà, mặt bàn), người bản xứ luôn dùng giới từ <b>"on"</b> (trên bề mặt).</p>
+                <p><b>3. Kết luận:</b> Chọn A. "in the wall" (bên trong bức tường - sai), "under" (dưới - sai), "behind" (phía sau - sai).</p>`
+            },
+            {
+                id: 17, qText: "17. ____ there many books on that shelf?",
+                options: ["Is", "Are", "Do", "Does"], correct: 1,
+                exp: `<h4>Giải thích chi tiết:</h4>
+                <p><b>1. Dịch câu hỏi:</b> Có nhiều sách trên cái kệ đó không?</p>
+                <p><b>2. Phân tích cấu trúc There is/ There are:</b><br>Cấu trúc này dùng to-be (Is/Are), tuyệt đối KHÔNG dùng mượn trợ động từ Do/Does -> Loại C, D.<br>Danh từ chính quyết định to-be là <b>"books"</b> (những cuốn sách - số nhiều đếm được).</p>
+                <p><b>3. Tại sao chọn B?</b><br>Vì "books" số nhiều nên câu hỏi phải đảo <b>"Are"</b> lên trước "there". (Are there + N số nhiều đếm được?)</p>`
+            },
+            {
+                id: 18, qText: "18. ____ there an elevator in this building?",
+                options: ["Is", "Are", "Do", "Does"], correct: 0,
+                exp: `<h4>Giải thích chi tiết:</h4>
+                <p><b>1. Dịch câu hỏi:</b> Có một cái thang máy trong tòa nhà này phải không?</p>
+                <p><b>2. Phân tích ngữ pháp:</b><br>Tương tự câu 17, ta loại Do/Does. Cần dùng Is/Are.<br>Danh từ chính theo sau là <b>"an elevator"</b> (MỘT cái thang máy - số ít).</p>
+                <p><b>3. Tại sao chọn A?</b><br>Với danh từ số ít hoặc không đếm được, ta dùng cấu trúc <b>"Is there...?"</b>.</p>`
+            },
+            {
+                id: 19, qText: "19. Look! These pupils are in grade 6. They ____ tall and strong.",
+                options: ["is", "are", "am", "be"], correct: 1,
+                exp: `<h4>Giải thích chi tiết:</h4>
+                <p><b>1. Dịch câu hỏi:</b> Nhìn kìa! Những học sinh này học lớp 6. Các bạn ấy cao và khỏe.</p>
+                <p><b>2. Phân tích động từ to-be:</b><br>Chủ ngữ là <b>"They"</b> (Họ / Chúng - ngôi thứ 3 số nhiều).<br>Trong thì Hiện tại đơn, to-be đi với "They" bắt buộc phải là <b>"are"</b>.</p>
+                <p><b>3. Kết luận:</b> Chọn B. (A dùng cho He/She/It; C dùng cho I; D là dạng nguyên thể không chia).</p>`
+            },
+            {
+                id: 20, qText: "20. They ____ football on the school ground right now.",
+                options: ["plays", "play", "is playing", "are playing"], correct: 3,
+                exp: `<h4>Giải thích chi tiết:</h4>
+                <p><b>1. Dịch câu hỏi:</b> Ngay lúc này, họ đang chơi bóng đá trên sân trường.</p>
+                <p><b>2. Phân tích Ngữ pháp:</b><br>Dấu hiệu thời gian: <b>"right now"</b> (ngay lúc này) -> Bắt buộc dùng <b>Thì Hiện tại tiếp diễn</b> (S + am/is/are + V-ing) để diễn tả hành động đang xảy ra. -> Loại A, B.<br>Chủ ngữ là <b>"They"</b> (số nhiều) nên to-be đi kèm là <b>"are"</b>.</p>
+                <p><b>3. Kết luận:</b> Chọn D (are playing). C sai to-be.</p>`
+            },
+            {
+                id: 21, qText: "21. Mimi ____ to music now.",
+                options: ["listens", "listen", "is listening", "listening"], correct: 2,
+                exp: `<h4>Giải thích chi tiết:</h4>
+                <p><b>1. Dịch câu hỏi:</b> Bây giờ Mimi đang nghe nhạc.</p>
+                <p><b>2. Phân tích Ngữ pháp:</b><br>Dấu hiệu: <b>"now"</b> (bây giờ) -> Dùng <b>Hiện tại tiếp diễn</b> (am/is/are + V-ing). -> Loại A, B.<br>Chủ ngữ <b>"Mimi"</b> (tên riêng, số ít) nên to-be là <b>"is"</b>.</p>
+                <p><b>3. Kết luận:</b> Chọn C (is listening). D sai vì thiếu động từ to-be.</p>`
+            },
+            {
+                id: 22, qText: "22. \"Where's my school bag?\" – \"____\"",
+                options: ["It's big.", "I don't like it.", "It's cheap.", "Under your desk."], correct: 3,
+                exp: `<h4>Giải thích chi tiết:</h4>
+                <p><b>1. Dịch tình huống:</b> "Cặp sách của tớ ở đâu?" - "Ở dưới gầm bàn của bạn đó."</p>
+                <p><b>2. Phân tích chức năng giao tiếp:</b><br>Câu hỏi bắt đầu bằng <b>"Where"</b> (Ở đâu), yêu cầu câu trả lời phải chỉ ra VỊ TRÍ, ĐỊA ĐIỂM.<br>A. Nó to (Miêu tả).<br>B. Tớ không thích nó (Cảm xúc).<br>C. Nó rẻ (Giá cả).<br>D. Dưới bàn của bạn (Vị trí - chứa giới từ chỉ nơi chốn "Under").</p>
+                <p><b>3. Kết luận:</b> Chọn D là câu trả lời giao tiếp hợp lý nhất.</p>`
+            },
+            {
+                id: 23, qText: "23. \"Where's Mum?\" – \"____\"",
+                options: ["She's reading.", "She's in the garden.", "I love her.", "She's a teacher."], correct: 1,
+                exp: `<h4>Giải thích chi tiết:</h4>
+                <p><b>1. Dịch tình huống:</b> "Mẹ đang ở đâu vậy?" - "Mẹ đang ở ngoài vườn."</p>
+                <p><b>2. Phân tích câu trả lời:</b><br>Tương tự câu 22, câu hỏi "Where" hỏi nơi chốn.<br>A. Hỏi mẹ đang làm gì (What is she doing?).<br>B. <b>She's in the garden.</b> (Trả lời đúng địa điểm "trong vườn").<br>C. Trả lời lạc đề.<br>D. Hỏi mẹ làm nghề gì (What does she do?).</p>
+                <p><b>3. Kết luận:</b> Chọn B.</p>`
+            },
+            {
+                id: 24, qText: "24. I'm always nervous when I'm ____ an exam.",
+                options: ["working", "making", "taking", "writing"], correct: 2,
+                exp: `<h4>Giải thích chi tiết:</h4>
+                <p><b>1. Dịch câu hỏi:</b> Tôi luôn luôn lo lắng khi tôi tham gia làm bài thi.</p>
+                <p><b>2. Phân tích sự kết hợp từ (Collocation):</b><br>Để diễn tả hành động "làm bài kiểm tra, tham gia thi", tiếng Anh sử dụng cụm động từ cố định: <b>"take an exam"</b> hoặc <b>"do an exam"</b>. Không dùng "work", "make" hay "write" (mặc dù thi viết).</p>
+                <p><b>3. Kết luận:</b> Chọn C (taking) để ráp đúng cụm từ "taking an exam".</p>`
+            },
+            {
+                id: 25, qText: "25. My father ____ the newspaper every morning.",
+                options: ["read", "reads", "is reading", "are reading"], correct: 1,
+                exp: `<h4>Giải thích chi tiết:</h4>
+                <p><b>1. Dịch câu hỏi:</b> Bố tôi đọc báo mỗi buổi sáng.</p>
+                <p><b>2. Phân tích ngữ pháp:</b><br>Dấu hiệu: <b>"every morning"</b> -> Thói quen lặp lại -> Dùng Hiện tại đơn. -> Loại C, D.<br>Chủ ngữ <b>"My father"</b> (Bố tôi) tương đương ngôi thứ 3 số ít "He". Động từ thường bắt buộc phải thêm "s" hoặc "es".</p>
+                <p><b>3. Kết luận:</b> Chọn B (reads). Đáp án A giữ nguyên thể là sai.</p>`
+            },
+            {
+                id: 26, qText: "26. The girls always ____ to pop music.",
+                options: ["listen", "listens", "is listening", "are listening"], correct: 0,
+                exp: `<h4>Giải thích chi tiết:</h4>
+                <p><b>1. Dịch câu hỏi:</b> Các cô gái luôn luôn nghe nhạc Pop.</p>
+                <p><b>2. Phân tích ngữ pháp:</b><br>Dấu hiệu: trạng từ tần suất <b>"always"</b> (luôn luôn) -> Hiện tại đơn. -> Loại C, D.<br>Chủ ngữ <b>"The girls"</b> (Những cô gái) có chữ 's' -> Danh từ số nhiều. Đi với chủ ngữ số nhiều, động từ ở thì hiện tại đơn phải <b>giữ nguyên thể</b> không chia.</p>
+                <p><b>3. Kết luận:</b> Chọn A (listen).</p>`
+            },
+            {
+                id: 27, qText: "27. What ____ the old man ____ now?",
+                options: ["does / play", "is / playing", "do / play", "are / playing"], correct: 1,
+                exp: `<h4>Giải thích chi tiết:</h4>
+                <p><b>1. Dịch câu hỏi:</b> Ông cụ đang chơi trò gì lúc này vậy?</p>
+                <p><b>2. Phân tích ngữ pháp:</b><br>Dấu hiệu: <b>"now"</b> (bây giờ) -> Câu hỏi thì Hiện tại tiếp diễn: Wh-word + am/is/are + S + V-ing? -> Loại A, C.<br>Chủ ngữ <b>"the old man"</b> (một ông cụ - số ít) nên to-be phải dùng là <b>"is"</b>.</p>
+                <p><b>3. Kết luận:</b> Chọn B (is / playing).</p>`
+            },
+            {
+                id: 28, qText: "28. ____ Minh and Hoa ____ to work by bus every day?",
+                options: ["Do / go", "Does / go", "Are / going", "Is / going"], correct: 0,
+                exp: `<h4>Giải thích chi tiết:</h4>
+                <p><b>1. Dịch câu hỏi:</b> Minh và Hoa có đi làm bằng xe buýt mỗi ngày không?</p>
+                <p><b>2. Phân tích ngữ pháp:</b><br>Dấu hiệu: <b>"every day"</b> -> Câu hỏi nghi vấn thì Hiện tại đơn: Do/Does + S + V(nguyên thể)? -> Loại C, D.<br>Chủ ngữ <b>"Minh and Hoa"</b> là 2 người -> Số nhiều. Do đó phải mượn trợ động từ <b>"Do"</b>.</p>
+                <p><b>3. Kết luận:</b> Chọn A. B sai vì dùng Does cho số nhiều.</p>`
+            },
+            {
+                id: 29, qText: "29. We park the family car in the ____ under the house.",
+                options: ["attic", "roof", "basement", "bathroom"], correct: 2,
+                exp: `<h4>Giải thích chi tiết:</h4>
+                <p><b>1. Dịch câu hỏi:</b> Chúng tôi đỗ chiếc xe của gia đình ở tầng hầm dưới ngầm ngôi nhà.</p>
+                <p><b>2. Phân tích từ vựng về các phòng trong nhà:</b><br>A. attic (n): gác xép (trên mái).<br>B. roof (n): mái nhà.<br>C. basement (n): tầng hầm.<br>D. bathroom (n): phòng tắm.</p>
+                <p><b>3. Tại sao chọn C?</b><br>Cụm từ <b>"under the house"</b> (bên dưới ngôi nhà) kết hợp với hành động đỗ xe (park the car) mô tả chính xác chức năng của một cái <b>"basement"</b> (tầng hầm).</p>`
+            },
+            {
+                id: 30, qText: "30. Mrs. Lisa often ____ class 3A, but this morning she ____ class 3B.",
+                options: ["teaches / teaches", "is teaching / is teaching", "teaches / is teaching", "is teaching / teaches"], correct: 2,
+                exp: `<h4>Giải thích chi tiết:</h4>
+                <p><b>1. Dịch câu hỏi:</b> Cô Lisa THƯỜNG dạy lớp 3A, nhưng SÁNG NAY cô ấy ĐANG DẠY lớp 3B.</p>
+                <p><b>2. Phân tích từng vế:</b><br>
+                - Vế 1 có <b>"often"</b> (thường xuyên) -> Chỉ thói quen, lịch trình cố định. Dùng <b>Hiện tại đơn (teaches)</b>.<br>
+                - Vế 2 có <b>"but this morning"</b> (nhưng sáng nay) -> Chỉ một sự thay đổi TẠM THỜI so với thói quen, diễn ra ngay lúc nói. Dùng <b>Hiện tại tiếp diễn (is teaching)</b>.</p>
+                <p><b>3. Kết luận:</b> Chọn C (teaches / is teaching).</p>`
+            },
+            {
+                id: 31, qText: "31. Look! The train ____.",
+                options: ["are coming", "is coming", "comes", "come"], correct: 1,
+                exp: `<h4>Giải thích chi tiết:</h4>
+                <p><b>1. Dịch câu hỏi:</b> Nhìn kìa! Tàu hỏa đang tới.</p>
+                <p><b>2. Phân tích ngữ pháp:</b><br>Dấu hiệu: Động từ mệnh lệnh gây sự chú ý <b>"Look!"</b> (Nhìn kìa!) luôn ám chỉ một hành động ĐANG XẢY RA ngay trước mắt. Dùng <b>Hiện tại tiếp diễn</b>. -> Loại C, D.<br>Chủ ngữ <b>"The train"</b> (1 chuyến tàu - số ít) nên to-be là <b>"is"</b>.</p>
+                <p><b>3. Kết luận:</b> Chọn B (is coming).</p>`
+            },
+            {
+                id: 32, qText: "32. Charlie ____ eggs.",
+                options: ["not eat", "don't eat", "doesn't eat", "isn't eating"], correct: 2,
+                exp: `<h4>Giải thích chi tiết:</h4>
+                <p><b>1. Dịch câu hỏi:</b> Charlie không ăn trứng (nói về sở thích/thói quen ăn kiêng).</p>
+                <p><b>2. Phân tích ngữ pháp:</b><br>Câu diễn tả sự thật hiển nhiên hoặc sở thích thường ngày, dùng Thì <b>Hiện tại đơn</b> thể phủ định: S + don't / doesn't + V(nguyên).<br>Chủ ngữ <b>"Charlie"</b> là tên riêng (ngôi thứ 3 số ít) nên bắt buộc phải dùng trợ động từ <b>"doesn't"</b>.</p>
+                <p><b>3. Kết luận:</b> Chọn C. (A sai cấu trúc; B dùng sai trợ động từ; D là tiếp diễn không hợp lý khi nói về sở thích ăn uống chung chung).</p>`
+            }
+        ];
+
+        // READING COMPREHENSION DATA
+        const readingPassage = `
+            <div class="reading-container">
+                <div class="reading-text">
+                    I am a grade 6 student at Shakespeare School in Birmingham. I often walk to school 
+                    <select id="gap33" class="gap-select" onchange="checkGap(this, 33)">
+                        <option value="" disabled selected>(33) ______</option>
+                        <option value="A">A. because</option>
+                        <option value="B">B. so</option>
+                        <option value="C">C. when</option>
+                        <option value="D">D. before</option>
+                    </select>
+                    I live nearby. I don’t wear a 
+                    <select id="gap34" class="gap-select" onchange="checkGap(this, 34)">
+                        <option value="" disabled selected>(34) ______</option>
+                        <option value="A">A. hat</option>
+                        <option value="B">B. uniform</option>
+                        <option value="C">C. jacket</option>
+                        <option value="D">D. dress</option>
+                    </select>
+                    only when I have physical education (P. E). Then I have to 
+                    <select id="gap35" class="gap-select" onchange="checkGap(this, 35)">
+                        <option value="" disabled selected>(35) ______</option>
+                        <option value="A">A. wear</option>
+                        <option value="B">B. to wear</option>
+                        <option value="C">C. wearing</option>
+                        <option value="D">D. to wearing</option>
+                    </select>
+                    a white T-shirt with the school’s name, blue shorts and white socks. Besides English, I learn Spanish and German as foreign languages. My school is well-equipped. There 
+                    <select id="gap36" class="gap-select" onchange="checkGap(this, 36)">
+                        <option value="" disabled selected>(36) ______</option>
+                        <option value="A">A. are</option>
+                        <option value="B">B. is</option>
+                        <option value="C">C. has</option>
+                        <option value="D">D. have</option>
+                    </select>
+                    a laboratory to do experiments, a library to read books, a music room to 
+                    <select id="gap37" class="gap-select" onchange="checkGap(this, 37)">
+                        <option value="" disabled selected>(37) ______</option>
+                        <option value="A">A. play</option>
+                        <option value="B">B. read</option>
+                        <option value="C">C. do</option>
+                        <option value="D">D. make</option>
+                    </select>
+                    musical instruments, and a computer room to learn how to use a computer.
+                </div>
+                <div class="reading-questions">
+                    <div id="reading-explanation" class="explanation" style="display:block; opacity: 1; transform: none; background: white; border: 2px solid var(--accent);">
+                        <h4>💡 Hướng dẫn & Giải thích:</h4>
+                        <p style="color: #34495e; font-weight: bold;">Hãy bấm vào các chỗ trống (33) -> (37) trong đoạn văn bên trái để chọn đáp án.</p>
+                        <p>Lời giải thích chi tiết chuẩn thạc sĩ sẽ hiện ra ngay tại khung này khi con chọn xong!</p>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        const readingAnswers = {
+            33: { ans: "A", exp: `<h4>Giải thích câu 33:</h4><p><b>Dịch nghĩa:</b> Tôi thường đi bộ tới trường <b>BỞI VÌ</b> tôi sống ở gần đó.</p><p><b>Phân tích:</b> Vế sau "I live nearby" (tôi sống ở gần) là <b>nguyên nhân</b> giải thích cho việc đi bộ (walk to school). Do đó ta dùng liên từ <b>because</b> (bởi vì). Các từ so (vì vậy), when (khi), before (trước khi) không hợp lý về logic.</p>` },
+            34: { ans: "B", exp: `<h4>Giải thích câu 34:</h4><p><b>Dịch nghĩa:</b> Tôi không mặc <b>đồng phục</b>, chỉ ngoại trừ khi có tiết Thể Dục (P.E).</p><p><b>Phân tích:</b> Trong môi trường trường học (school), thứ học sinh thường phải mặc là <b>"uniform"</b> (đồng phục). Các câu sau liệt kê áo phông trắng, quần đùi - đây chính là quần áo đồng phục học thể dục.</p>` },
+            35: { ans: "A", exp: `<h4>Giải thích câu 35:</h4><p><b>Dịch nghĩa:</b> Khi đó tôi phải <b>mặc</b> một chiếc áo phông trắng...</p><p><b>Phân tích Ngữ pháp:</b> Cấu trúc <b>"have to + V(nguyên thể)"</b> (phải làm gì đó, bắt buộc do ngoại cảnh). Động từ đứng sau chữ "to" trong cấu trúc này bắt buộc phải giữ nguyên thể không chia. -> Chọn <b>wear</b>.</p>` },
+            36: { ans: "B", exp: `<h4>Giải thích câu 36:</h4><p><b>Dịch nghĩa:</b> <b>Có</b> một phòng thí nghiệm để làm thực nghiệm...</p><p><b>Phân tích Ngữ pháp:</b> Cấu trúc "There is/are" (Có...). Danh từ đứng ngay sát khoảng trống là <b>"a laboratory"</b> (MỘT phòng thí nghiệm - số ít). Với danh từ số ít đếm được, ta phải dùng <b>There is</b>. -> Chọn B (is).</p>` },
+            37: { ans: "A", exp: `<h4>Giải thích câu 37:</h4><p><b>Dịch nghĩa:</b> ...một phòng âm nhạc để <b>chơi</b> các nhạc cụ...</p><p><b>Phân tích Collocation:</b> Cụm từ cố định trong tiếng Anh để nói về việc sử dụng nhạc cụ là <b>"play musical instruments"</b>. (Ví dụ: play the piano, play the guitar). Các từ read (đọc), do (làm), make (chế tạo) sai hoàn toàn về kết hợp từ.</p>` }
+        };
+
+        // REWRITING DATA
+        const rewritingData = [
+            {
+                id: 38, qText: "38. William listens to the radio. (USUALLY)",
+                start: "→ William",
+                ansKeys: ["usually listens to the radio", "usually listens to the radio."],
+                exp: `<h4>Giải thích chi tiết:</h4>
+                <p><b>Đáp án đúng:</b> William usually listens to the radio.</p>
+                <p><b>Giải thích:</b> Trạng từ tần suất "usually" (thường xuyên) có vị trí đứng <b>TRƯỚC</b> động từ thường (listens) và đứng SAU động từ to-be.</p>`
+            },
+            {
+                id: 39, qText: "39. My teacher is late for lessons. (NEVER)",
+                start: "→ My teacher",
+                ansKeys: ["is never late for lessons", "is never late for lessons."],
+                exp: `<h4>Giải thích chi tiết:</h4>
+                <p><b>Đáp án đúng:</b> My teacher is never late for lessons.</p>
+                <p><b>Giải thích:</b> Trạng từ tần suất "never" (không bao giờ) phải đặt <b>SAU</b> động từ to-be (is). (is never late).</p>`
+            },
+            {
+                id: 40, qText: "40. My sister often goes to school by bike, but today she walks to school. (IS)",
+                start: "→ My sister often goes to school by bike, but today she",
+                ansKeys: ["is walking to school", "is walking to school."],
+                exp: `<h4>Giải thích chi tiết:</h4>
+                <p><b>Đáp án đúng:</b> is walking to school.</p>
+                <p><b>Giải thích:</b> Dấu hiệu "but today" (nhưng hôm nay) chỉ sự thay đổi tạm thời so với thói quen (often). Ta phải chuyển động từ "walks" (hiện tại đơn) sang "is walking" (hiện tại tiếp diễn).</p>`
+            },
+            {
+                id: 41, qText: "41. This is the bedroom of my brother. (BROTHER'S)",
+                start: "→ This is my",
+                ansKeys: ["brother's bedroom", "brother's bedroom."],
+                exp: `<h4>Giải thích chi tiết:</h4>
+                <p><b>Đáp án đúng:</b> brother's bedroom.</p>
+                <p><b>Giải thích:</b> Viết lại câu sở hữu: "Cái gì CỦA ai" = "Tên người sở hữu + 's + Danh từ món đồ". Cấu trúc "the bedroom of my brother" viết gọn lại thành "my brother's bedroom".</p>`
+            },
+            {
+                id: 42, qText: "42. The dog is in front of the microwave. (BEHIND)",
+                start: "→ The microwave",
+                ansKeys: ["is behind the dog", "is behind the dog."],
+                exp: `<h4>Giải thích chi tiết:</h4>
+                <p><b>Đáp án đúng:</b> is behind the dog.</p>
+                <p><b>Giải thích:</b> Câu gốc: "Con chó ở phía trước lò vi sóng". Viết lại với chủ ngữ bị đảo ngược: "Lò vi sóng ở <b>phía sau</b> con chó". Từ trái nghĩa của "in front of" là "behind".</p>`
+            },
+            {
+                id: 43, qText: "43. She has a new school bag. (DOES)",
+                start: "→",
+                ansKeys: ["does she have a new school bag?", "does she have a new school bag", "Does she have a new school bag?", "Does she have a new school bag"],
+                exp: `<h4>Giải thích chi tiết:</h4>
+                <p><b>Đáp án đúng:</b> Does she have a new school bag?</p>
+                <p><b>Giải thích:</b> Đề bài yêu cầu chuyển câu khẳng định thì Hiện tại đơn sang câu hỏi nghi vấn (có từ gợi ý Does). Cấu trúc: Does + S + V(nguyên thể)? (has -> have).</p>`
+            },
+            {
+                id: 44, qText: "44. I go to school by bicycle. (HOW)",
+                start: "→",
+                ansKeys: ["how do you go to school?", "how do you go to school", "How do you go to school?", "How do you go to school"],
+                exp: `<h4>Giải thích chi tiết:</h4>
+                <p><b>Đáp án đúng:</b> How do you go to school?</p>
+                <p><b>Giải thích:</b> Đặt câu hỏi cho cụm phương tiện "by bicycle" (bằng xe đạp). Từ để hỏi phương tiện là <b>"How"</b>. Ngôi thứ nhất "I" đổi thành "you" trong câu hỏi, đi kèm trợ động từ "do".</p>`
+            },
+            {
+                id: 45, qText: "45. Our garden has many trees. (ARE)",
+                start: "→ There",
+                ansKeys: ["are many trees in our garden", "are many trees in our garden."],
+                exp: `<h4>Giải thích chi tiết:</h4>
+                <p><b>Đáp án đúng:</b> are many trees in our garden.</p>
+                <p><b>Giải thích:</b> Viết lại câu từ động từ "have/has" sang cấu trúc "There is/are" chỉ sự tồn tại. (Vườn của tôi có nhiều cây -> Có nhiều cây trong vườn của tôi). Danh từ "trees" số nhiều nên dùng "There are".</p>`
+            }
+        ];
+
+        let currentScore = 0;
+        let totalQuestions = questionsData.length + Object.keys(readingAnswers).length + rewritingData.length;
+        let errorDetails = "";
+        let studentNameStr = "";
+
+        // Thuật toán xáo trộn mảng MCQ (Fisher-Yates)
+        function shuffleArray(array) {
+            let currentIndex = array.length, randomIndex;
+            let indices = Array.from(Array(array.length).keys());
+            while (currentIndex != 0) {
+                randomIndex = Math.floor(Math.random() * currentIndex);
+                currentIndex--;
+                [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+                [indices[currentIndex], indices[randomIndex]] = [indices[randomIndex], indices[currentIndex]];
+            }
+            return { shuffledArray: array, newIndicesMap: indices };
+        }
+
+        function startTest() {
+            const nameInput = document.getElementById('studentName').value.trim();
+            if(!nameInput) { alert("Con nhớ nhập tên nhé!"); return; }
+            studentNameStr = nameInput;
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('quiz-container').style.display = 'block';
+            renderQuiz();
+        }
+
+        function renderQuiz() {
+            const area = document.getElementById('questions-area');
+            let html = "";
+            let currentSection = "";
+
+            // 1. Render Trắc nghiệm (I & II)
+            questionsData.forEach((q) => {
+                if (q.section && q.section !== currentSection) {
+                    html += `<div class="section-title" style="margin-top: 30px;">${q.section}</div>`;
+                    if(q.instruction) html += `<p style="margin-bottom: 20px; font-style: italic; color: #555;">${q.instruction}</p>`;
+                    currentSection = q.section;
+                }
+
+                const shuffleResult = shuffleArray([...q.options]);
+                const newOptions = shuffleResult.shuffledArray;
+                const correctIndexNow = shuffleResult.newIndicesMap.indexOf(q.correct);
+
+                let btnHtml = "";
+                const labels = ["A", "B", "C", "D"];
+                newOptions.forEach((opt, i) => {
+                    const isCorrect = (i === correctIndexNow);
+                    btnHtml += `<button class="btn-option" id="btn-${q.id}-${i}" onclick="checkMCQ(${q.id}, ${i}, ${isCorrect}, '${labels[i]}')">
+                                    <span style="font-weight: 900; margin-right: 15px; color: var(--primary); font-size: 18px;">${labels[i]}.</span> 
+                                    <span>${opt}</span>
+                                </button>`;
+                });
+
+                html += `
+                    <div class="card" id="card-${q.id}">
+                        <div class="question-text">${q.qText}</div>
+                        <div class="options-grid" id="grid-${q.id}">${btnHtml}</div>
+                        <div class="explanation" id="exp-${q.id}">${q.exp}</div>
+                    </div>
+                `;
+            });
+
+            // 2. Render Đọc hiểu (III)
+            html += `
+                <div class="section-title" style="margin-top: 40px;">III. READING COMPREHENSION</div>
+                <p style="margin-bottom: 20px; font-style: italic; color: #555;">Read the passage and choose the correct word that best fits each of the numbered blanks.</p>
+                <div class="card">${readingPassage}</div>
+            `;
+
+            // 3. Render Tự luận Viết lại (IV)
+            html += `
+                <div class="section-title" style="margin-top: 40px;">IV. SENTENCE REWRITING</div>
+                <p style="margin-bottom: 20px; font-style: italic; color: #555;">Rewrite the following sentences without changing their original meanings.</p>
+            `;
+            
+            rewritingData.forEach((rw) => {
+                html += `
+                    <div class="card" id="card-${rw.id}">
+                        <div class="question-text">${rw.qText}</div>
+                        <div style="display:flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                            <span style="font-weight: bold; font-size: 18px; color: var(--primary);">${rw.start}</span>
+                            <input type="text" id="input-${rw.id}" class="rewrite-input" placeholder="Viết tiếp vào đây..." style="flex:1; min-width: 250px;">
+                            <button class="btn-check" id="btnCheck-${rw.id}" onclick="checkRewrite('${rw.id}')">KIỂM TRA</button>
+                        </div>
+                        <div class="explanation" id="exp-${rw.id}">${rw.exp}</div>
+                    </div>
+                `;
+            });
+
+            area.innerHTML = html;
+        }
+
+        // --- HÀM CHẤM ĐIỂM ---
+
+        // 1. Chấm Trắc nghiệm
+        function checkMCQ(qId, btnIdx, isCorrect, chosenLabel) {
+            const grid = document.getElementById(`grid-${qId}`);
+            const buttons = grid.querySelectorAll('.btn-option');
+            const card = document.getElementById(`card-${qId}`);
+            const exp = document.getElementById(`exp-${qId}`);
+
+            buttons.forEach(btn => btn.disabled = true); // Khóa nút
+
+            const clickedBtn = document.getElementById(`btn-${qId}-${btnIdx}`);
+            
+            if (isCorrect) {
+                clickedBtn.classList.add('correct');
+                playDing();
+                triggerConfetti(clickedBtn);
+                currentScore++;
+            } else {
+                clickedBtn.classList.add('wrong');
+                card.classList.add('shake');
+                playBuzz();
+                buttons.forEach(btn => {
+                    if(btn.onclick.toString().includes("true")) btn.classList.add('correct');
+                });
+                errorDetails += `- Sai câu ${qId}: Chọn ${chosenLabel}\n`;
+            }
+            exp.style.display = 'block';
+        }
+
+        // 2. Chấm Đọc hiểu (Gap Fill)
+        function checkGap(selectElement, qId) {
+            const chosenAns = selectElement.value;
+            const correctAns = readingAnswers[qId].ans;
+            const expDiv = document.getElementById('reading-explanation');
+
+            selectElement.disabled = true;
+
+            if (chosenAns === correctAns) {
+                selectElement.classList.add('correct');
+                playDing();
+                triggerConfetti(selectElement);
+                currentScore++;
+            } else {
+                selectElement.classList.add('wrong');
+                playBuzz();
+                errorDetails += `- Sai Điền từ ${qId}: Chọn ${chosenAns} (Đúng: ${correctAns})\n`;
+            }
+            
+            expDiv.innerHTML = readingAnswers[qId].exp;
+            expDiv.style.backgroundColor = '#fffaf0';
+            setTimeout(() => { expDiv.style.backgroundColor = 'white'; }, 500);
+        }
+
+        // 3. Chấm Viết lại câu
+        function checkRewrite(rwId) {
+            const inputEl = document.getElementById(`input-${rwId}`);
+            const btnEl = document.getElementById(`btnCheck-${rwId}`);
+            const expDiv = document.getElementById(`exp-${rwId}`);
+            const data = rewritingData.find(d => d.id == rwId);
+            
+            let userVal = inputEl.value.trim().toLowerCase();
+            
+            if(userVal === "") return; 
+
+            inputEl.disabled = true;
+            btnEl.disabled = true;
+
+            let isCorrect = false;
+            // Xóa dấu chấm câu dư thừa cuối để chống học sinh gõ dư chấm
+            let cleanUserVal = userVal.replace(/[.?!]$/, "").replace(/\s+/g, " ");
+
+            for(let key of data.ansKeys) {
+                let cleanKey = key.toLowerCase().replace(/[.?!]$/, "");
+                if (cleanUserVal === cleanKey || data.start.toLowerCase().trim() + " " + cleanUserVal === cleanKey) {
+                    isCorrect = true; break;
+                }
+            }
+
+            if (isCorrect) {
+                inputEl.classList.add('correct');
+                playDing();
+                triggerConfetti(btnEl);
+                currentScore++;
+            } else {
+                inputEl.classList.add('wrong');
+                document.getElementById(`card-${rwId}`).classList.add('shake');
+                playBuzz();
+                errorDetails += `- Sai Viết lại ${rwId}: "${inputEl.value}"\n`;
+            }
+            expDiv.style.display = 'block';
+        }
+
+        function triggerConfetti(element) {
+            const rect = element.getBoundingClientRect();
+            const x = (rect.left + rect.width / 2) / window.innerWidth;
+            const y = (rect.top + rect.height / 2) / window.innerHeight;
+            confetti({ particleCount: 50, spread: 60, origin: { x: x, y: y }, colors: ['#00D26A', '#FDCB6E', '#4A90E2'] });
+        }
+
+        // --- NỘP BÀI GỬI FORM ---
+        let submitted = false;
+        function submitTest() {
+            if(!confirm("Con đã chắc chắn muốn nộp bài chưa?")) return;
+
+            const btnSubmit = document.getElementById('submit-test');
+            btnSubmit.innerHTML = "⏳ ĐANG GỬI KẾT QUẢ...";
+            btnSubmit.disabled = true;
+
+            document.getElementById('form-tenhs').value = studentNameStr;
+            document.getElementById('form-diem').value = currentScore;
+            document.getElementById('form-tile').value = `${currentScore}/${totalQuestions}`;
+            document.getElementById('form-loisai').value = errorDetails || "Giỏi quá, đúng hết! Không có lỗi sai.";
+
+            // Cập nhật giao diện kết quả
+            document.getElementById('result-name').innerText = studentNameStr;
+            document.getElementById('result-score').innerText = `${currentScore} / ${totalQuestions}`;
+            
+            const feedbackEl = document.getElementById('result-feedback');
+            const percent = currentScore / totalQuestions;
+            if(percent === 1) feedbackEl.innerText = "Tuyệt đỉnh! Con đạt điểm tối đa! Xuất sắc! 🏆🌟";
+            else if (percent >= 0.8) feedbackEl.innerText = "Giỏi lắm! Con đã nắm bài rất tốt! Tiếp tục phát huy nhé! 🚀";
+            else if (percent >= 0.5) feedbackEl.innerText = "Khá tốt! Con hãy xem lại kỹ các câu sai phần giải thích nhé! 💪";
+            else feedbackEl.innerText = "Không sao! Cố gắng luyện tập và đọc kỹ giải thích để tiến bộ hơn nha con! ❤️";
+
+            document.getElementById('ss-form').submit();
+            submitted = true;
+
+            setTimeout(showResultScreen, 1500); 
+        }
+
+        function showResultScreen() {
+            document.getElementById('quiz-container').style.display = 'none';
+            document.getElementById('result-screen').style.display = 'flex';
+            confetti({ particleCount: 200, spread: 120, origin: { y: 0.2 } });
+            playDing(); setTimeout(playDing, 200); setTimeout(playDing, 400);
+        }
+    </script>
+</body>
+</html>
