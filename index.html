@@ -1,16 +1,17 @@
+<!-- Test tháng 8 lớp 6.html -->
 <!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bài test tháng 8 lớp 6</title>
+    <title>Bài test tháng 8 lớp 6 - MS Chí Nên</title>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         :root {
-            --primary: #4A90E2; /* Xanh dương dễ thương cho lớp 6 */
-            --secondary: #FF6B6B; /* Đỏ san hô */
-            --accent: #FDCB6E; /* Vàng sáng */
+            --primary: #4A90E2;
+            --secondary: #FF6B6B;
+            --accent: #FDCB6E;
             --correct: #00D26A;
             --correct-shadow: #00a051;
             --wrong: #FF4757;
@@ -44,7 +45,6 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* Họa tiết nổi vui nhộn (ngôi sao, đám mây, mặt cười) */
         .pattern-bg {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
@@ -151,7 +151,6 @@
         }
         .shake { animation: shake 0.5s; }
 
-        /* Khung giải thích siêu chi tiết */
         .explanation {
             display: none;
             margin-top: 20px;
@@ -174,7 +173,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Split View Reading */
         .reading-container {
             display: flex;
             gap: 20px;
@@ -206,7 +204,6 @@
         .gap-select.correct { background: var(--correct); color: white; border-color: var(--correct); box-shadow: none; transform: translateY(4px);}
         .gap-select.wrong { background: var(--wrong); color: white; border-color: var(--wrong); box-shadow: none; transform: translateY(4px); }
 
-        /* Rewriting Input */
         .rewrite-input {
             width: 100%;
             padding: 15px;
@@ -315,7 +312,6 @@
 <body>
     <div class="pattern-bg"></div>
 
-    <!-- Màn hình Đăng nhập -->
     <div id="login-screen">
         <div class="modal-content">
             <h1 style="color: var(--primary); margin-bottom: 10px; font-size: 32px;">🌟 BÀI TEST LỚP 6 🌟</h1>
@@ -325,7 +321,6 @@
         </div>
     </div>
 
-    <!-- Màn hình Kết quả -->
     <div id="result-screen" style="display: none;">
         <div class="modal-content">
             <h1 style="color: var(--correct); font-size: 35px;">🎉 CHÚC MỪNG 🎉</h1>
@@ -337,14 +332,12 @@
         </div>
     </div>
 
-    <!-- Form Test chính -->
     <div class="container" id="quiz-container" style="display: none;">
         <h2 class="header-title">📝 BÀI KIỂM TRA TIẾNG ANH LỚP 6</h2>
         <div id="questions-area"></div>
         <button id="submit-test" onclick="submitTest()">NỘP BÀI & XEM ĐIỂM 🏆</button>
     </div>
 
-    <!-- Google Form Ẩn -->
     <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="if(submitted) { showResultScreen(); }"></iframe>
     <form id="ss-form" action="https://docs.google.com/forms/d/e/1FAIpQLSelQyzh_lWyb2vZUnQ1jc1p9FLRknDZiUt9NiUiiX1epHTFLw/formResponse" method="POST" target="hidden_iframe" style="display:none;">
         <input type="hidden" name="entry.351633352" value="Bài test Tiếng Anh Lớp 6" id="form-testname">
@@ -355,7 +348,6 @@
     </form>
 
     <script>
-        // --- HỆ THỐNG ÂM THANH WEB AUDIO API ---
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         
         function playDing() {
@@ -363,8 +355,8 @@
             const osc = audioCtx.createOscillator();
             const gainNode = audioCtx.createGain();
             osc.type = 'sine';
-            osc.frequency.setValueAtTime(880, audioCtx.currentTime); // Nốt A5
-            osc.frequency.exponentialRampToValueAtTime(1760, audioCtx.currentTime + 0.1); // Lên A6
+            osc.frequency.setValueAtTime(880, audioCtx.currentTime); 
+            osc.frequency.exponentialRampToValueAtTime(1760, audioCtx.currentTime + 0.1); 
             gainNode.gain.setValueAtTime(0.5, audioCtx.currentTime);
             gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
             osc.connect(gainNode);
@@ -388,9 +380,7 @@
             osc.stop(audioCtx.currentTime + 0.3);
         }
 
-        // --- CƠ SỞ DỮ LIỆU CÂU HỎI VÀ GIẢI THÍCH SIÊU CHI TIẾT ---
         const questionsData = [
-            // PHONETICS
             {
                 id: 1, section: "I. PHONETICS", instruction: "Mark the letter A, B, C, or D to indicate the word whose underlined part differs from the other three in pronunciation.",
                 qText: "1. A. br<u>o</u>ther    B. m<u>o</u>ther    C. p<u>u</u>t    D. s<u>o</u>me",
@@ -433,8 +423,6 @@
                 <p>A. h<u>ou</u>se /haʊs/<br>B. l<u>u</u>nch /lʌntʃ/<br>C. s<u>u</u>n /sʌn/<br>D. f<u>u</u>n /fʌn/</p>
                 <p><b>2. Tại sao chọn A?</b><br>Chữ "ou" trong house phát âm là nguyên âm đôi <b>/aʊ/</b>. Các từ còn lại chứa chữ "u" phát âm là <b>/ʌ/</b> (âm á).</p>`
             },
-
-            // MULTIPLE CHOICE
             {
                 id: 6, section: "II. MULTIPLE CHOICE", instruction: "Mark the letter A, B, C, or D to indicate the correct answer to each of the following questions.",
                 qText: "6. Most schools require children to wear school ____.",
@@ -656,7 +644,6 @@
             }
         ];
 
-        // READING COMPREHENSION DATA
         const readingPassage = `
             <div class="reading-container">
                 <div class="reading-text">
@@ -720,7 +707,6 @@
             37: { ans: "A", exp: `<h4>Giải thích câu 37:</h4><p><b>Dịch nghĩa:</b> ...một phòng âm nhạc để <b>chơi</b> các nhạc cụ...</p><p><b>Phân tích Collocation:</b> Cụm từ cố định trong tiếng Anh để nói về việc sử dụng nhạc cụ là <b>"play musical instruments"</b>. (Ví dụ: play the piano, play the guitar). Các từ read (đọc), do (làm), make (chế tạo) sai hoàn toàn về kết hợp từ.</p>` }
         };
 
-        // REWRITING DATA
         const rewritingData = [
             {
                 id: 38, qText: "38. William listens to the radio. (USUALLY)",
@@ -793,7 +779,6 @@
         let errorDetails = "";
         let studentNameStr = "";
 
-        // Thuật toán xáo trộn mảng MCQ (Fisher-Yates)
         function shuffleArray(array) {
             let currentIndex = array.length, randomIndex;
             let indices = Array.from(Array(array.length).keys());
@@ -820,7 +805,6 @@
             let html = "";
             let currentSection = "";
 
-            // 1. Render Trắc nghiệm (I & II)
             questionsData.forEach((q) => {
                 if (q.section && q.section !== currentSection) {
                     html += `<div class="section-title" style="margin-top: 30px;">${q.section}</div>`;
@@ -836,7 +820,8 @@
                 const labels = ["A", "B", "C", "D"];
                 newOptions.forEach((opt, i) => {
                     const isCorrect = (i === correctIndexNow);
-                    btnHtml += `<button class="btn-option" id="btn-${q.id}-${i}" onclick="checkMCQ(${q.id}, ${i}, ${isCorrect}, '${labels[i]}')">
+                    const cleanOpt = opt.replace(/<[^>]+>/g, '').replace(/'/g, "\\'").replace(/"/g, "&quot;");
+                    btnHtml += `<button class="btn-option" id="btn-${q.id}-${i}" onclick="checkMCQ(${q.id}, ${i}, ${isCorrect}, '${labels[i]}', '${cleanOpt}')">
                                     <span style="font-weight: 900; margin-right: 15px; color: var(--primary); font-size: 18px;">${labels[i]}.</span> 
                                     <span>${opt}</span>
                                 </button>`;
@@ -851,14 +836,12 @@
                 `;
             });
 
-            // 2. Render Đọc hiểu (III)
             html += `
                 <div class="section-title" style="margin-top: 40px;">III. READING COMPREHENSION</div>
                 <p style="margin-bottom: 20px; font-style: italic; color: #555;">Read the passage and choose the correct word that best fits each of the numbered blanks.</p>
                 <div class="card">${readingPassage}</div>
             `;
 
-            // 3. Render Tự luận Viết lại (IV)
             html += `
                 <div class="section-title" style="margin-top: 40px;">IV. SENTENCE REWRITING</div>
                 <p style="margin-bottom: 20px; font-style: italic; color: #555;">Rewrite the following sentences without changing their original meanings.</p>
@@ -881,16 +864,13 @@
             area.innerHTML = html;
         }
 
-        // --- HÀM CHẤM ĐIỂM ---
-
-        // 1. Chấm Trắc nghiệm
-        function checkMCQ(qId, btnIdx, isCorrect, chosenLabel) {
+        function checkMCQ(qId, btnIdx, isCorrect, chosenLabel, chosenText) {
             const grid = document.getElementById(`grid-${qId}`);
             const buttons = grid.querySelectorAll('.btn-option');
             const card = document.getElementById(`card-${qId}`);
             const exp = document.getElementById(`exp-${qId}`);
 
-            buttons.forEach(btn => btn.disabled = true); // Khóa nút
+            buttons.forEach(btn => btn.disabled = true); 
 
             const clickedBtn = document.getElementById(`btn-${qId}-${btnIdx}`);
             
@@ -906,12 +886,12 @@
                 buttons.forEach(btn => {
                     if(btn.onclick.toString().includes("true")) btn.classList.add('correct');
                 });
-                errorDetails += `- Sai câu ${qId}: Chọn ${chosenLabel}\n`;
+                let cleanText = chosenText.replace(/<[^>]+>/g, '');
+                errorDetails += `- Sai câu ${qId}: Chọn ${chosenLabel} (${cleanText})\n`;
             }
             exp.style.display = 'block';
         }
 
-        // 2. Chấm Đọc hiểu (Gap Fill)
         function checkGap(selectElement, qId) {
             const chosenAns = selectElement.value;
             const correctAns = readingAnswers[qId].ans;
@@ -935,7 +915,6 @@
             setTimeout(() => { expDiv.style.backgroundColor = 'white'; }, 500);
         }
 
-        // 3. Chấm Viết lại câu
         function checkRewrite(rwId) {
             const inputEl = document.getElementById(`input-${rwId}`);
             const btnEl = document.getElementById(`btnCheck-${rwId}`);
@@ -950,7 +929,6 @@
             btnEl.disabled = true;
 
             let isCorrect = false;
-            // Xóa dấu chấm câu dư thừa cuối để chống học sinh gõ dư chấm
             let cleanUserVal = userVal.replace(/[.?!]$/, "").replace(/\s+/g, " ");
 
             for(let key of data.ansKeys) {
@@ -981,7 +959,6 @@
             confetti({ particleCount: 50, spread: 60, origin: { x: x, y: y }, colors: ['#00D26A', '#FDCB6E', '#4A90E2'] });
         }
 
-        // --- NỘP BÀI GỬI FORM ---
         let submitted = false;
         function submitTest() {
             if(!confirm("Con đã chắc chắn muốn nộp bài chưa?")) return;
@@ -995,7 +972,6 @@
             document.getElementById('form-tile').value = `${currentScore}/${totalQuestions}`;
             document.getElementById('form-loisai').value = errorDetails || "Giỏi quá, đúng hết! Không có lỗi sai.";
 
-            // Cập nhật giao diện kết quả
             document.getElementById('result-name').innerText = studentNameStr;
             document.getElementById('result-score').innerText = `${currentScore} / ${totalQuestions}`;
             
